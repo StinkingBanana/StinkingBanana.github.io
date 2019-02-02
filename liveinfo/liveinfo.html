@@ -1,0 +1,105 @@
+<!-- twitch.tv/StinkingBanana -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Raleway:100);
+
+        body {
+            background: rgba(0, 0, 0, 0);
+            margin: 60px 0px;
+            overflow: hidden;
+        }
+
+        #topText {
+            color: #ffce1c;
+            font-family: "SetoFont", "Microsoft YaHei";
+            font-weight: 300;
+            font-stretch: normal;
+            font-size: 5em;
+            -webkit-text-stroke-width: 4px;
+            -webkit-text-stroke-color: black;
+            margin: 0px 0px 5px 20px;
+        }
+
+        #botText {
+            color: #ffce1c;
+            font-family: "SetoFont", 'Raleway';
+            font-weight: 600;
+            font-stretch: normal;
+            font-size: 4em;
+            -webkit-text-stroke-width: 4px;
+            -webkit-text-stroke-color: black;
+            margin: 20px 0px 0px 20px;
+        }
+
+        .slider {
+            position: absolute;
+            width: 425px;
+            height: 5px;
+        }
+
+        .line {
+            position: absolute;
+            background: red;
+            width: 425px;
+            height: 5px;
+
+        }
+
+        .break {
+            position: absolute;
+            background: white;
+            width: 6px;
+            height: 5px;
+        }
+
+        .dot1 {
+            animation: loading 2s infinite;
+        }
+
+        .dot2 {
+            animation: loading 2s 0.5s infinite;
+        }
+
+        .dot3 {
+            animation: loading 2s 1s infinite;
+        }
+
+        @keyframes loading {
+            from {
+                left: 0;
+            }
+            to {
+                left: 400px;
+            }
+        }
+    </style>
+</head>
+
+<body translate="no">
+    <div id="topText"></div>
+    <div class="slider">
+        <div class="line"></div>
+        <div class="break dot1"></div>
+        <div class="break dot2"></div>
+        <div class="break dot3"></div>
+    </div>
+    <div id="botText"></div>
+    <script>
+        var defaultTop = "等待中";
+        var defaultBot = "Waiting";
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
+        document.getElementById("topText").innerHTML = getUrlParameter('top') === '' ? defaultTop : getUrlParameter('top');
+        document.getElementById("botText").innerHTML = getUrlParameter('bot') === '' ? defaultBot : getUrlParameter('bot');
+    </script>
+</body>
+
+</html>
