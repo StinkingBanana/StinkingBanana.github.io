@@ -12,7 +12,13 @@
 
 <body>
     <div class="container">
-        <h2>注意，認證代碼有時效性。失效的時候，歡迎回來生成新的認證代碼。</h2>
+        <div class="row">
+            <div class="col-sm-10">
+                <h2>注意，認證代碼有時效性。失效的時候，歡迎回來生成新的認證代碼。</h2>
+            </div>
+            <div class="col-sm-2"><a href="https://github.com/StinkingBanana/StinkingBanana.github.io/tree/master/livestats2" class="button tertiary">回到Github專案頁面</a></div>
+        </div>
+
 
         <form id="form1">
             <h4>第一步: 生成Access Token認證代碼</h4>
@@ -88,7 +94,7 @@
 
     // 自動記錄 ClientID 不需要每次都輸入
     var local_client_id = localStorage.getItem('twitch_client_id');
-    if(local_client_id){
+    if (local_client_id) {
         document.getElementById('client_id').value = local_client_id
     }
 </script>
