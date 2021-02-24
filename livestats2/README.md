@@ -38,8 +38,8 @@
 1. 在 #access_token= 後面那段隨機的英文數字是你的 **認證代碼**, 擷取記錄下來.
 
 #### 方法 2.
-1. 使用上一步取得的 **用戶端 ID** , 使用小幫手網頁來取得 **認證代碼** 
-[認證代碼小幫手](./helper.html)
+1. 使用上一步取得的 **用戶端 ID** , 使用 **認證代碼小幫手** 網頁來取得 **認證代碼**   
+[https://stinkingbanana.github.io/livestats2/](https://stinkingbanana.github.io/livestats2/helper.html)
 
 ## 第三步: 設定OBS
 以下設置是假設你的OBS的畫布大小是1920x1080為前提
