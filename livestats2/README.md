@@ -37,7 +37,7 @@
 ```http://localhost/#access_token={你需要的認證代碼}&scope=viewing_activity_read&token_type=bearer```
 1. 在 #access_token= 後面那段隨機的英文數字是你的 **認證代碼**, 擷取記錄下來.
 
-#### 方法 2.
+#### <span style="color: red">[新更新!!]</span> 方法 2.
 1. 使用上一步取得的 **用戶端 ID** , 使用 **認證代碼小幫手** 網頁來取得 **認證代碼**   
 [https://stinkingbanana.github.io/livestats2/helper.html](https://stinkingbanana.github.io/livestats2/helper.html)
 
@@ -102,7 +102,7 @@
 # 備註
 1. "**直播時間**" 與 "**觀看人數**" 需要開台後約1~2分鐘才會刷新
 
-2. 如果**已直播時間**顯示Invalid OAuth token, 請重新使用[第二步](#step2)拿取新的認證代碼
+2. 如果**已直播時間**顯示Invalid OAuth token, 請重新使用[第二步](#step2)拿取新的認證代碼, 因為認證代碼是有時效性的
     <p><img src="./error_invalid.png"></p>
 
 3. 有任何需要幫助, 請使用Discord聯繫我 [https://discord.me/stinkingbanana](https://discord.me/stinkingbanana)
