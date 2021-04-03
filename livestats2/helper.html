@@ -127,7 +127,6 @@
       document.getElementById("client_id").value = client_id;
 
       localStorage.setItem("twitch_client_id", client_id);
-      localStorage.setItem("twitch_obs_url", obs_url);
       if (client_id) {
         const authURL = `https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=${client_id}&redirect_uri=http://localhost&scope=viewing_activity_read`;
         window.open(authURL);
@@ -177,10 +176,6 @@
     if (local_client_id) {
       document.getElementById("client_id").value = local_client_id;
       document.getElementById("result_clientID").innerText = local_client_id;
-    }
-    var local_obs_url = localStorage.getItem("twitch_obs_url");
-    if (local_obs_url) {
-      document.getElementById("obs_url").value = local_obs_url;
     }
     var local_access_token = localStorage.getItem("twitch_access_token");
     if (local_access_token) {
