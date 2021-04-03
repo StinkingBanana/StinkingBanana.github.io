@@ -152,6 +152,7 @@
         alert("找不到AccessToken, 請聯絡臭蕉");
         return;
       }
+      localStorage.setItem("twitch_access_token", extract_token[1]);
 
       let obs_url = document.getElementById("obs_url");
       let result_obs_url = document.getElementById("result_obs_url");
@@ -161,6 +162,7 @@
       );
       obs_url.value = new_obs_url;
       result_obs_url.value = new_obs_url;
+      localStorage.setItem("twitch_new_obs_url", new_obs_url);
     }
 
     const form1 = document.getElementById("form1");
@@ -179,6 +181,14 @@
     var local_obs_url = localStorage.getItem("twitch_obs_url");
     if (local_obs_url) {
       document.getElementById("obs_url").value = local_obs_url;
+    }
+    var local_access_token = localStorage.getItem("twitch_access_token");
+    if (local_access_token) {
+      document.getElementById("result_token").value = local_access_token;
+    }
+    var local_new_obs_url = localStorage.getItem("twitch_new_obs_url");
+    if (local_new_obs_url) {
+      document.getElementById("result_obs_url").value = local_new_obs_url;
     }
   </script>
 </html>
