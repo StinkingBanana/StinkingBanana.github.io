@@ -154,12 +154,13 @@
         return;
       }
 
-      let obs_url = document.getElementById("obs_url").value;
+      let obs_url = document.getElementById("obs_url");
       let result_obs_url = document.getElementById("result_obs_url");
-      let new_obs_url = obs_url.replace(
+      let new_obs_url = obs_url.value.replace(
         /accessToken\=(\w+)&/,
-        `accessToken=${extract_token[1]}`
+        `accessToken=${extract_token[1]}&`
       );
+      obs_url.value = new_obs_url;
       result_obs_url.value = new_obs_url;
     }
 
