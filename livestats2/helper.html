@@ -115,8 +115,13 @@
 
       let client_id = urlParams.get("clientID");
       if (!client_id) {
-        alert("檢查一下您的URL唷...");
+        alert("檢查一下您的URL的clientID唷...");
         document.getElementById("obs_url").value = "";
+        return;
+      }   
+      let accessToken = urlParams.get("accessToken");
+      if (!accessToken) {
+        alert("檢查一下您的URL的accessToken唷... 之前有沒有多打了個s呢? 是'accessToken'唷 ");
         return;
       }
       document.getElementById("client_id").value = client_id;
