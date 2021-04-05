@@ -113,11 +113,6 @@
       let obs_url = document.getElementById("obs_url").value;
       const urlParams = new URLSearchParams(obs_url);
 
-      let login = urlParams.get("login");
-      if (!login) {
-        alert("您是不是少了login的參數呢...?");
-        return;
-      }
       let client_id = urlParams.get("clientID");
       if (!client_id) {
         alert("檢查一下您的URL的clientID唷...");
