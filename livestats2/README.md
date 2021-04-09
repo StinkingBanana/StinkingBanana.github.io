@@ -92,7 +92,7 @@
 
 1. 打開你的 OBS Studio
 1. 加入瀏覽器來源
-   - 網址: `https://stinkingbanana.github.io/livestats2/index.html&dateFormat=MM/DD&timeFormat=HH:mm:ss`
+   - 網址: `https://stinkingbanana.github.io/livestats2/index.html?dateFormat=MM/DD ddd&timeFormat=HH:mm:ss`
    - 寬度: 455
    - 高度: 22
 
