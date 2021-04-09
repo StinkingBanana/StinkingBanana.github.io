@@ -22,6 +22,9 @@
 
 # 使用方式
 
+如果只需要使用日期與時間的話，不需要申請用戶端ID與認證代碼，可以直接使用，請跳至第三步。
+可調整日期格式, 時間格式, 與國旗。
+
 ## 第一步: 申請用戶端ＩＤ
 
 [https://dev.twitch.tv/console/apps](https://dev.twitch.tv/console/apps)
@@ -78,7 +81,7 @@
 1. 加入瀏覽器來源
    - 網址: `https://stinkingbanana.github.io/livestats2/index.html?login={需要顯示的頻道帳號}&clientID={你的用戶端ID}&accesssToken={你的認證代碼}&flag=tw`
    - 寬度: 695
-   - 高度: 22
+   - 高度: 24
 
 #### 顯示 "日期", "時間"
 
@@ -86,7 +89,7 @@
 1. 加入瀏覽器來源
    - 網址: `https://stinkingbanana.github.io/livestats2/index.html`
    - 寬度: 455
-   - 高度: 22
+   - 高度: 24
 
 #### 顯示 "日期 但不包含年分", "時間 但不包含時區"
 
@@ -94,7 +97,7 @@
 1. 加入瀏覽器來源
    - 網址: `https://stinkingbanana.github.io/livestats2/index.html?dateFormat=MM/DD ddd&timeFormat=HH:mm:ss`
    - 寬度: 455
-   - 高度: 22
+   - 高度: 24
 
 #### 顯示 "觀看人數", "已直播時間", "日期", "時間"
 
@@ -102,7 +105,7 @@
 1. 加入瀏覽器來源
    - 網址: `https://stinkingbanana.github.io/livestats2/index.html?login={需要顯示的頻道帳號}&clientID={你的用戶端ID}&accesssToken={你的認證代碼}`
    - 寬度: 660
-   - 高度: 22
+   - 高度: 24
 
 #### 顯示 "已直播時間", "日期", "時間"; 不顯示 "觀看人數"
 
@@ -110,7 +113,7 @@
 1. 加入瀏覽器來源
    - 網址: `https://stinkingbanana.github.io/livestats2/index.html?login={需要顯示的頻道帳號}&clientID={你的用戶端ID}&accesssToken={你的認證代碼}&vc=0`
    - 寬度: 595
-   - 高度: 22
+   - 高度: 24
 
 #### 顯示 "觀看人數", "日期", "時間"; 不顯示 "已直播時間"
 
@@ -118,7 +121,7 @@
 1. 加入瀏覽器來源
    - 網址: `https://stinkingbanana.github.io/livestats2/index.html?login={需要顯示的頻道帳號}&clientID={你的用戶端ID}&accesssToken={你的認證代碼}&st=0`
    - 寬度: 595
-   - 高度: 22
+   - 高度: 24
 
 #### 附加顯示 "國旗"
 
