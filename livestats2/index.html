@@ -77,6 +77,10 @@
       let accessToken = "";
       let apiurl = "https://api.twitch.tv/helix/streams";
       let updateTwitchIntervalID;
+      const defaultDateFormat = "MM/DD/YY ddd";
+      const defaultTimeFormat = "HH:mm:ss UTCZ";
+      let userDateFormat = "";
+      let userTimeFormat = "";
       const updateInterval = 10000;
       const twitchViewerCount = document.getElementById("twitchViewerCount");
       const twitchUptime = document.getElementById("twitchUptime");
@@ -86,7 +90,7 @@
       const time = document.getElementById("time");
       const flag = document.getElementById("flag");
       const author = "twitch.tv/StinkingBanana";
-      const updatedat = "2020.07.12";
+      const updatedat = "2021.04.09";
       let startedtime = null;
 
       function getUrlParameter(name) {
@@ -156,8 +160,8 @@
       setInterval(
         (cur = function () {
           let now = moment();
-          date.innerText = now.tz(moment.tz.guess()).format("MM/DD/YY ddd");
-          time.innerText = now.tz(moment.tz.guess()).format("HH:mm:ss UTCZ");
+          date.innerText = now.tz(moment.tz.guess()).format(userDateFormat);
+          time.innerText = now.tz(moment.tz.guess()).format(userTimeFormat);
         }),
         1000
       );
@@ -201,6 +205,18 @@
         flag.classList.add("flag-" + getUrlParameter("flag"));
       } else {
         flag.style.display = "none";
+      }
+
+      if (getUrlParameter("dateFormat") != "") {
+        userDateFormat = getUrlParameter("dateFormat");
+      } else {
+        userDateFormat = defaultDateFormat;
+      }
+
+      if (getUrlParameter("timeFormat") != "") {
+        userTimeFormat = getUrlParameter("timeFormat");
+      } else {
+        userTimeFormat = defaultTimeFormat;
       }
     </script>
   </body>
