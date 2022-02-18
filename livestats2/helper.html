@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="tw">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.rawgit.com/Chalarangelo/mini.css/v3.0.1/dist/mini-default.min.css"
+    />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>取得Twitch認證代碼小幫手</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-10">
+          <h1>OBS 直播時間 觀眾人數 顯示器 V2 - 認證代碼小幫手</h1>
+        </div>
+        <div class="col-sm-2">
+          <a
+            href="https://github.com/StinkingBanana/StinkingBanana.github.io/tree/master/livestats2"
+            class="button tertiary"
+            >回到Github專案頁面</a
+          >
+        </div>
+      </div>
+      <h4>注意！認證代碼有時效性。失效的時候，歡迎回來，到<b>第一步 (選擇二)</b>生成新的認證代碼。</h4>
+
+      <form id="form1">
+        <h3>第一步 (選擇一): 生成認證代碼 (Access Token)</h3>
+        <div class="input-group fluid">
+          <label for="client_id">請輸入Client-ID: </label>
+          <input type="text" id="client_id" placeholder="Client ID" />
+          <input type="submit" value="生成" />
+        </div>
+        <p>1. 跑出新視窗登入Twitch</p>
+        <p>2. 登入成功後，網頁會變成空白的</p>
+        <p>3. 請查看網頁的網址裡是否有 #access_token=... </p>
+        <p>4. 複製整個網址，貼上到第二步</p>
+      </form>
+
+      <form id="form1_1">
+        <h3>第一步 (選擇二): 輸入已完成的OBS工具設定網址，來重新生成認證代碼</h3>
+        <div class="input-group fluid">
+          <label for="obs_url">工具網址: </label>
+          <input
+            type="text"
+            id="obs_url"
+            placeholder="https://stinkingbanana.github.io/livestats2/index.html?login=stinkingbanana&clientID={cient_ID}&accesssToken={token}&flag=tw"
+          />
+          <input type="submit" value="生成" />
+        </div>
+      </form>
+
+      <form id="form2">
+        <h3>第二步: 複製貼上第一步完成後開啟的網頁的網址來擷取認證代碼 (Access Token)</h3>
+        <div class="input-group fluid">
+          <label for="token">貼上第一步開啟網頁的網址: </label>
+          <input
+            type="text"
+            id="token"
+            placeholder="http://localhost/#access_token=...."
+          />
+          <input type="submit" value="擷取" />
+        </div>
+      </form>
+
+      <form id="result">
+        <div class="card fluid">
+          <h3>第三步: 總結</h3>
+          <p>
+            您的ClientID:
+            <span id="result_clientID" style="color: red"></span>
+          </p>
+          <p>
+            您的Toekn:
+            <span id="result_token" style="color: red"></span>
+          </p>
+            <button
+              class="btn"
+              data-clipboard-target="#result_obs_url"
+            >
+              複製您的OBS URL
+            </button>
+            <input id="result_obs_url" style="color: red" />
+          </p>
+        </div>
+      </form>
+    </div>
+  </body>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+  <script language="javascript" type="text/javascript">
+    var clipboard = new ClipboardJS(".btn");
+
+    clipboard.on('success', function(e) {
+        alert("文字已複製完畢")
+        e.clearSelection();
+    });
+
+    function getClientID(e) {
+      e.preventDefault();
+      const client_id = document.getElementById("client_id").value;
+      localStorage.setItem("twitch_client_id", client_id);
+      if (client_id) {
+        const authURL = `https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=${client_id}&redirect_uri=http://localhost&scope=viewing_activity_read`;
+        window.open(authURL);
+      }
+    }
+
+    function getClientIDfromURL(e) {
+      e.preventDefault();
+      let obs_url = document.getElementById("obs_url").value;
+      const urlParams = new URLSearchParams(obs_url);
+
+      let client_id = urlParams.get("clientID");
+      if (!client_id) {
+        alert("檢查一下您的URL的clientID唷...");
+        return;
+      }   
+      let accessToken = urlParams.get("accessToken");
+      if (!accessToken) {
+        alert("檢查一下您的URL的accessToken唷... 之前有沒有多打了個s呢? 是'accessToken'唷 ");
+        return;
+      }
+      document.getElementById("client_id").value = client_id;
+
+      localStorage.setItem("twitch_client_id", client_id);
+      if (client_id) {
+        const authURL = `https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=${client_id}&redirect_uri=http://localhost&scope=viewing_activity_read`;
+        window.open(authURL);
+      }
+    }
+
+    function getAccessToken(e) {
+      e.preventDefault();
+      const client_id = document.getElementById("client_id").value;
+      const token_pattern = /.*access_token\=(\w+)&/;
+      let token = document.getElementById("token").value;
+      let extract_token = token_pattern.exec(token);
+      let result_display = document.getElementById("result");
+      let result_clientID = document.getElementById("result_clientID");
+      let result_token = document.getElementById("result_token");
+
+      if (extract_token && extract_token[1]) {
+        result_display.classList.remove("hidden");
+        result_clientID.innerText = client_id;
+        result_token.innerText = extract_token[1];
+      } else {
+        alert("找不到AccessToken, 請聯絡臭蕉");
+        return;
+      }
+      localStorage.setItem("twitch_access_token", extract_token[1]);
+
+      let obs_url = document.getElementById("obs_url");
+      let result_obs_url = document.getElementById("result_obs_url");
+      let new_obs_url = obs_url.value.replace(
+        /accessToken\=(\w+)&/,
+        `accessToken=${extract_token[1]}&`
+      );
+      obs_url.value = new_obs_url;
+      result_obs_url.value = new_obs_url;
+      localStorage.setItem("twitch_new_obs_url", new_obs_url);
+      alert("新的AccessToken擷取成功, 請至第三步");
+    }
+
+    const form1 = document.getElementById("form1");
+    form1.addEventListener("submit", getClientID);
+    const form1_1 = document.getElementById("form1_1");
+    form1_1.addEventListener("submit", getClientIDfromURL);
+    const form2 = document.getElementById("form2");
+    form2.addEventListener("submit", getAccessToken);
+
+    // 自動記錄 不需要每次都輸入
+    var local_client_id = localStorage.getItem("twitch_client_id");
+    if (local_client_id) {
+      document.getElementById("client_id").value = local_client_id;
+      document.getElementById("result_clientID").innerText = local_client_id;
+    }
+    var local_access_token = localStorage.getItem("twitch_access_token");
+    if (local_access_token) {
+      document.getElementById("result_token").innerText = local_access_token;
+    }
+    var local_new_obs_url = localStorage.getItem("twitch_new_obs_url");
+    if (local_new_obs_url) {
+      document.getElementById("result_obs_url").value = local_new_obs_url;
+    }
+  </script>
+</html>

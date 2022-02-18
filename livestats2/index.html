@@ -1,0 +1,237 @@
+<!-- twitch.tv/StinkingBanana -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      body {
+        background: rgba(0, 0, 0, 0);
+        margin: 0 auto;
+        overflow: hidden;
+      }
+
+      div {
+        display: inline-block;
+        vertical-align: top;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        color: rgba(255, 255, 255, 0.75);
+        padding: 0px 0px 0px 8px;
+      }
+
+      span {
+        display: inline-block;
+        vertical-align: top;
+        font-size: 22px;
+        font-family: "consolas";
+        font-weight: 400;
+        padding: 0px 5px 0px 0px;
+      }
+
+      section {
+        display: inline-block;
+      }
+
+      .icon {
+        height: 22px;
+        width: 22px;
+        margin: 0;
+        padding: 1px;
+        opacity: 0.75;
+      }
+
+      #twitch {
+        width: 40px;
+        margin: 0 2px 0 2px;
+        display: inline-block;
+      }
+
+      #uptime {
+        margin: 0 2px 0 2px;
+        display: inline-block;
+      }
+
+    </style>
+    <link href="../assets/flags.min.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body translate="no">
+    <div>
+      <section id="twitchViewerCount">
+        <img src="../assets/twitch1.png" class="icon" />
+        <span id="twitch">...</span>
+      </section>
+      <section id="twitchUptime">
+        <img src="../assets/live1.png" class="icon" />
+        <span id="uptime">00:00:00</span>
+      </section>
+      <section id="dateDisplay">
+        <img src="../assets/calendar1.png" class="icon" />
+        <span id="date"></span>
+      </section>
+      <section id="timeDisplay">
+        <img src="../assets/clock1.png" class="icon" />
+        <span id="time"></span>
+      </section>
+      <img id="flag" src="../assets/blank.gif" class="flag" />
+    </div>
+    <script src="../assets/moment-with-locales.js"></script>
+    <script src="../assets/moment-timezone-with-data.js"></script>
+    <script>
+      let clientID = "";
+      let accessToken = "";
+      let apiurl = "https://api.twitch.tv/helix/streams";
+      let updateTwitchIntervalID;
+      const defaultDateFormat = "MM/DD/YY ddd";
+      const defaultTimeFormat = "HH:mm:ss Z";
+      let userDateFormat = "";
+      let userTimeFormat = "";
+      const updateInterval = 10000;
+      const twitchViewerCount = document.getElementById("twitchViewerCount");
+      const twitchUptime = document.getElementById("twitchUptime");
+      const twitch = document.getElementById("twitch");
+      const uptime = document.getElementById("uptime");
+      const dateDisplay = document.getElementById("dateDisplay");
+      const date = document.getElementById("date");
+      const timeDisplay = document.getElementById("timeDisplay");
+      const time = document.getElementById("time");
+      const flag = document.getElementById("flag");
+      const author = "twitch.tv/StinkingBanana";
+      const updatedat = "2021.10.18";
+      let startedtime = null;
+
+      function getUrlParameter(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        let regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+        let results = regex.exec(location.search);
+        return results === null
+          ? ""
+          : decodeURIComponent(results[1].replace(/\+/g, " "));
+      }
+
+      function getTwtichStream() {
+        fetch(apiurl, {
+          headers: new Headers({
+            "Client-ID": clientID,
+            Authorization: "Bearer " + accessToken,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data && data["data"] != null && data["data"][0] != null) {
+              twitch.innerHTML = data["data"][0]["viewer_count"];
+              startedtime = moment(data["data"][0]["started_at"]);
+            } else if (data && data["error"]) {
+              twitch.innerHTML = data["status"];
+              startedtime = null;
+              uptime.innerText = data["message"];
+              clearInterval(updateTwitchIntervalID);
+            } else {
+              twitch.innerHTML = 0;
+              startedtime = null;
+              uptime.innerText = "00:00:00";
+            }
+          });
+      }
+
+      function pad(n) {
+        return n < 10 ? "0" + n : n;
+      }
+
+      function updateUptime() {
+        if (startedtime != null) {
+          const diff = moment.duration(moment().diff(startedtime));
+          uptime.innerText =
+            "" +
+            pad(diff.days() * 24 + diff.hours()) +
+            ":" +
+            pad(diff.minutes()) +
+            ":" +
+            pad(diff.seconds());
+        }
+      }
+      // Console Log
+      console.log(
+        "%cCreated By: %c%s \n%cUpdated: %c%s",
+        "color:red",
+        "color:yellow ",
+        author,
+        "color:red",
+        "color:yellow",
+        updatedat
+      );
+
+      // Process viewer Count
+      if (getUrlParameter("login") != "") {
+        apiurl += "?user_login=" + getUrlParameter("login");
+        if (
+          getUrlParameter("clientID") != "" &&
+          getUrlParameter("accessToken") != ""
+        ) {
+          clientID = getUrlParameter("clientID");
+          accessToken = getUrlParameter("accessToken");
+          // Get live stream data from Twitch
+          updateTwitchIntervalID = setInterval((_) => {
+            getTwtichStream();
+          }, updateInterval);
+          // Uptime
+          setInterval((_) => {
+            updateUptime();
+          }, 1000);
+          // Hide viewer count
+          if (getUrlParameter("vc") == "0") {
+            twitchViewerCount.style.display = "none";
+          }
+          // Hide stream timer
+          if (getUrlParameter("st") == "0") {
+            twitchUptime.style.display = "none";
+          }
+        } else {
+          twitchViewerCount.style.display = "none";
+          twitchUptime.style.display = "none";
+        }
+      } else {
+        twitchViewerCount.style.display = "none";
+        twitchUptime.style.display = "none";
+      }
+
+      // Process parameters 
+      if (getUrlParameter("flag") != "") {
+        flag.classList.add("flag-" + getUrlParameter("flag"));
+      } else {
+        flag.style.display = "none";
+      }
+
+      if(getUrlParameter("dateFormat") == "0") {
+        userTimeFormat = defaultTimeFormat;
+        dateDisplay.style.display = "none";
+      } else if (getUrlParameter("dateFormat") != "") {
+        userDateFormat = getUrlParameter("dateFormat");
+      } else {
+        userDateFormat = defaultDateFormat;
+      }
+
+      if(getUrlParameter("timeFormat") == "0") {
+        userTimeFormat = defaultTimeFormat;
+        timeDisplay.style.display = "none";
+      } else if (getUrlParameter("timeFormat") != "") {
+        userTimeFormat = getUrlParameter("timeFormat");
+      }  else {
+        userTimeFormat = defaultTimeFormat;
+      }
+
+      // Time
+      moment.tz.guess(true);
+      let cur;
+      setInterval(
+        (cur = function () {
+          let now = moment();
+          date.innerText = now.tz(moment.tz.guess()).format(userDateFormat);
+          time.innerText = now.tz(moment.tz.guess()).format(userTimeFormat);
+        }),
+        1000
+      );
+      cur();
+    </script>
+  </body>
+</html>
